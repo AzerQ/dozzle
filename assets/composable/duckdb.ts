@@ -35,6 +35,7 @@ export async function useDuckDB() {
   const { db, worker } = await createDuckDb();
   const conn = await db.connect();
 
+  await initOfflinePluginsRepository(conn);
   cleanup = async () => {
     console.log("Cleaning up DuckDB");
     await conn.close();
@@ -43,4 +44,14 @@ export async function useDuckDB() {
   };
 
   return { db, conn };
+}
+
+async function initOfflinePluginsRepository(conn: duckdb.AsyncDuckDBConnection) {
+  const extensionRepository = `${window.location.origin}${import.meta.env.BASE_URL}duckdb-extensions`;
+
+  await conn.query(`
+    SET custom_extension_repository = '${extensionRepository}';
+  `);
+
+  await conn.query(`INSTALL json;`);
 }
