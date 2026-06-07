@@ -47,7 +47,7 @@ export async function useDuckDB() {
 }
 
 async function initOfflinePluginsRepository(conn: duckdb.AsyncDuckDBConnection) {
-  const extensionRepository = `${window.location.origin}${import.meta.env.BASE_URL}duckdb-extensions`;
+  const extensionRepository = `${window.location.origin}${import.meta.env.BASE_URL}duckdb-extensions/duckdb-wasm`;
 
   await conn.query(`
     SET custom_extension_repository = '${extensionRepository}';
