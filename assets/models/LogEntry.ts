@@ -52,6 +52,9 @@ export abstract class LogEntry<T extends LogMessage> {
     public readonly level?: Level,
   ) {
     this._message = message;
+    if (this.level) {
+      this.level = this.level.toLowerCase().trim() as Level;
+    }
   }
 
   public get message(): T {
